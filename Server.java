@@ -13,12 +13,19 @@ public class Server {
                 System.out.println("New client connected");
 
                 // Create a new thread for each client connection
-                new ServerThread(socket).start();
+                // if cannot start new thread, just tell the user
+
+                try {
+                    new ServerThread(socket).start();
+                } catch (Exception e) {
+                    System.out.println("Cannot start new thread for client connection");
+                    socket.close();
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-    }
+        } 
+
 }
 
 class ServerThread extends Thread {
