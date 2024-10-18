@@ -8,6 +8,12 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(8080)) {
             System.out.println("Server is listening on port 8080");
 
+
+
+            int random_number = (int) (Math.random() * 30 + 30);
+            String server_name = "Server_" + random_number;
+
+
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
@@ -16,7 +22,7 @@ public class Server {
                 // if cannot start new thread, just tell the user
 
                 try {
-                    new ServerThread(socket).start();
+                    new ServerThread(socket, server_name).start();
                 } catch (Exception e) {
                     System.out.println("Cannot start new thread for client connection");
                     socket.close();
@@ -31,9 +37,11 @@ public class Server {
 
 class ServerThread extends Thread {
     private Socket socket;
+    private String name;
 
-    public ServerThread(Socket socket) {
+    public ServerThread(Socket socket, String name) {
         this.socket = socket;
+        this.name = name;
     }
 
     public void run() {
@@ -52,8 +60,9 @@ class ServerThread extends Thread {
                 long result = fibonacci(number); // Example calculation
 
                 // Sending the result back to the client
+                String response = name + " says " + "Fibonacci(" + number + "): " + result + "\n";
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                writer.write("Fibonacci(" + number + "): " + result + "\n");
+                writer.write(response);
                 writer.flush();
             }
             else {
