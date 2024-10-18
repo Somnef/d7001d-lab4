@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 public class Server {
 
@@ -9,8 +10,8 @@ public class Server {
             System.out.println("Server is listening on port 8080");
 
 
-
-            int random_number = (int) (Math.random() * 30 + 30);
+            Random rand = new Random();
+            int random_number = rand.nextInt(1000);
             String server_name = "Server_" + random_number;
 
 
