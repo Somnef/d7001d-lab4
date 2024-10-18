@@ -11,7 +11,11 @@ public class Smith extends Agent {
         addBehaviour(new TickerBehaviour(this, 1000) {  // Period is set to 1 second
             protected void onTick() {
                 try {
-                    Socket socket = new Socket("127.0.0.1", 8080);
+                    // String server_address = "lab4-nlb-3da72e83c75c16d1.elb.eu-west-3.amazonaws.com";
+                    String server_address = "15.188.14.243";
+                    int port = 8080;
+
+                    Socket socket = new Socket(server_address, port);
                     System.out.println(getLocalName() + " connected to server");
 
                     // Sending request to the server (if needed, otherwise just wait for response)

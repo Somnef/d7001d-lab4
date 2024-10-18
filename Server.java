@@ -33,18 +33,24 @@ class ServerThread extends Thread {
             // Receiving request from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String clientRequest = reader.readLine();
-            System.out.println("Received request: " + clientRequest);
 
-            // Get the number from the request (between brackets)
-            int number = Integer.parseInt(clientRequest.substring(clientRequest.indexOf("(") + 1, clientRequest.indexOf(")")));
+            if (clientRequest != null) {
+                System.out.println("Received request: " + clientRequest);
 
-            // Performing the calculation (Fibonacci in this case)
-            long result = fibonacci(number); // Example calculation
+                // Get the number from the request (between brackets)
+                int number = Integer.parseInt(clientRequest.substring(clientRequest.indexOf("(") + 1, clientRequest.indexOf(")")));
 
-            // Sending the result back to the client
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            writer.write("Fibonacci(" + number + "): " + result + "\n");
-            writer.flush();
+                // Performing the calculation (Fibonacci in this case)
+                long result = fibonacci(number); // Example calculation
+
+                // Sending the result back to the client
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                writer.write("Fibonacci(" + number + "): " + result + "\n");
+                writer.flush();
+            }
+            else {
+                System.out.println("Received empty request (potentially NLB health check)");
+            }
 
             // Closing the connection after sending the response
             socket.close();
